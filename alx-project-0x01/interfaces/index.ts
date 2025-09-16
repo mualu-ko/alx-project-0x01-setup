@@ -1,3 +1,4 @@
+// Post Interfaces
 export interface PostProps {
   userId: number;
   id: number;
@@ -5,7 +6,19 @@ export interface PostProps {
   body: string;
 }
 
-// Main User Interface
+export interface PostData {
+  userId: number;
+  id?: number;
+  title: string;
+  body: string;
+}
+
+export interface PostModalProps {
+  onClose: () => void;
+  onSubmit: (post: PostData) => void;
+}
+
+// User Interfaces
 export interface UserProps {
   id: number;
   name: string;
@@ -35,14 +48,15 @@ export interface Company {
   catchPhrase: string;
   bs: string;
 }
-export interface PostData {
-  userId: number;
-  id?: number;
-  title: string;
-  body: string;
-}
 
-export interface PostModalProps {
+// Alias UserData to match new requirement (same as UserProps)
+export type UserData = UserProps;
+
+// Modal Props for UserModal
+export interface UserModalProps {
+  isOpen: boolean;
   onClose: () => void;
-  onSubmit: (post: PostData) => void;
+  onOpen: () => void;
+  onSubmit: (newUser: UserProps) => void;
+  user?: UserData; // optional, because we may open modal for "Add User"
 }
