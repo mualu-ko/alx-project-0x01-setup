@@ -57,6 +57,6 @@ export interface UserModalProps {
   isOpen: boolean;
   onClose: () => void;
   onOpen: () => void;
-  onSubmit: (newUser: UserProps) => void;
+  onSubmit: (post: UserProps) => void;
   user?: UserData; // optional, because we may open modal for "Add User"
 }
