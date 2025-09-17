@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { UserProps, UserData } from "@/interfaces";
 import UserCard from "@/components/common/UserCard";
 import UserModal from "@/components/common/UserModal";
-
+import Header from "@/components/layout/Header";
 interface UsersPageProps {
   posts: UserProps[]; // posts is actually users from the API
 }
 
 const Users: React.FC<UsersPageProps> = ({ posts }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
   const [users, setUsers] = useState<UserProps[]>(posts);
 
   const handleAddUser = (user: UserData) => {
@@ -23,10 +23,11 @@ const Users: React.FC<UsersPageProps> = ({ posts }) => {
 
   return (
     <div className="p-8">
+      <Header />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Users</h1>
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => setModalOpen(true)}
           className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
         >
           Add User
@@ -41,10 +42,10 @@ const Users: React.FC<UsersPageProps> = ({ posts }) => {
 
       {isModalOpen && (
         <UserModal
-                  onClose={() => setIsModalOpen(false)}
+                  onClose={() => setModalOpen(false)}
                   onSubmit={(newUser: UserProps) => {
                       handleAddUser(newUser);
-                      setIsModalOpen(false);
+                      setModalOpen(false);
                   } } isOpen={false} onOpen={function (): void {
                       throw new Error("Function not implemented.");
                   } }        />

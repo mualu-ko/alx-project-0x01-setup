@@ -1,8 +1,38 @@
-import React from "react";
-import { UserModalProps } from "@/interfaces";
+import React, { useState } from "react";
+import { UserModalProps, UserData } from "@/interfaces";
 
-const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, user }) => {
+const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSubmit, user }) => {
+  const [form, setForm] = useState<UserData>({
+    name: user?.name || "",
+    email: user?.email || "",
+    username: user?.username || "",
+    phone: user?.phone || "",
+    website: user?.website || "",
+    company: user?.company || { name: "" },
+    address: user?.address || { street: "", city: "", suite: "", zipcode: "", geo: { lat: "", lng: "" } },
+  });
+
   if (!isOpen) return null;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === "company") {
+      setForm({ ...form, company: {
+        name: value,
+        catchPhrase: "",
+        bs: ""
+      } });
+    } else if (name === "street" || name === "city") {
+      setForm({ ...form, address: { ...form.address, [name]: value } });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(form);
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -45,21 +75,73 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, user }) => {
             </p>
           </div>
         ) : (
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <input
               type="text"
+              name="name"
               placeholder="Name"
               className="border rounded w-full p-2"
+              value={form.name}
+              onChange={handleChange}
+              required
             />
             <input
               type="email"
+              name="email"
               placeholder="Email"
               className="border rounded w-full p-2"
+              value={form.email}
+              onChange={handleChange}
+              required
             />
             <input
               type="text"
+              name="username"
               placeholder="Username"
               className="border rounded w-full p-2"
+              value={form.username}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              name="phone"
+              placeholder="Phone"
+              className="border rounded w-full p-2"
+              value={form.phone}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="website"
+              placeholder="Website"
+              className="border rounded w-full p-2"
+              value={form.website}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="company"
+              placeholder="Company"
+              className="border rounded w-full p-2"
+              value={form.company.name}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="street"
+              placeholder="Street"
+              className="border rounded w-full p-2"
+              value={form.address.street}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="city"
+              placeholder="City"
+              className="border rounded w-full p-2"
+              value={form.address.city}
+              onChange={handleChange}
             />
             <button
               type="submit"
